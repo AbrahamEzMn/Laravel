@@ -14,6 +14,7 @@ class RegistroController extends Controller
     public function index()
     {
         //
+        echo "Index";
     }
 
     /**
@@ -24,6 +25,7 @@ class RegistroController extends Controller
     public function create()
     {
         //
+        echo "create";
     }
 
     /**
@@ -35,6 +37,7 @@ class RegistroController extends Controller
     public function store(Request $request)
     {
         //
+        echo "Store";
     }
 
     /**
@@ -46,6 +49,7 @@ class RegistroController extends Controller
     public function show($id)
     {
         //
+        echo "Show ".$id;
     }
 
     /**
@@ -57,6 +61,7 @@ class RegistroController extends Controller
     public function edit($id)
     {
         //
+        echo "Edit ".$id;
     }
 
     /**
@@ -69,6 +74,7 @@ class RegistroController extends Controller
     public function update(Request $request, $id)
     {
         //
+        echo "Update ".$id;
     }
 
     /**
@@ -80,5 +86,6 @@ class RegistroController extends Controller
     public function destroy($id)
     {
         //
+        echo "Destroy ".$id;
     }
 }
