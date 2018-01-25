@@ -18,21 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 /**
- * Ruta de prueba.
+ * Ruta para el manejo de personas.
  * 
- * @url GET /ApiRest/public/api/foo
+ * @url GET /ApiRest/public/api/persona -- Lista de personas.
+ * @url GET /ApiRest/public/api/persona/{id} -- Retorna una persona por su Id.
+ * @url POST /ApiRest/public/api/persona -- Guarda una persona.
+ * @url UPDATE|PATCH /ApiRest/public/api/persona/{id} -- Modifica a la persona por su Id.
+ * @url DELETE /ApiRest/public/api/persona/{id} -- Elimina la persona por el Id.
  */
-Route::get('foo', function () {
-    return 'Hello World';
-});
-
-/**
- * Ruta para el manejo de resgistros.
- * 
- * @url GET /ApiRest/public/api/registro -- Lista de registros.
- * @url GET /ApiRest/public/api/resgitro/{id} -- Retorna un registro por su Id.
- * @url POST /ApiRest/public/api/registro -- Guarda un registro.
- * @url UPDATE|PATCH /ApiRest/public/api/registro/{id} -- Modifica el registro por su Id.
- * @url DELETE /ApiRest/public/api/registro/{id} -- Elimina el registro por el Id.
- */
-Route::resource('registro', 'RegistroController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
+Route::resource('persona', 'PersonaController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
