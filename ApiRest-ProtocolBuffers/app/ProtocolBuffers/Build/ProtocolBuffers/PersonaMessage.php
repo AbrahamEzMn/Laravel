@@ -31,17 +31,17 @@ class PersonaMessage extends \Google\Protobuf\Internal\Message
      */
     private $edad = 0;
     /**
-     * Generated from protobuf field <code>bool sexo = 4;</code>
+     * Generated from protobuf field <code>int32 sexo = 4;</code>
      */
-    private $sexo = false;
+    private $sexo = 0;
     /**
      * Generated from protobuf field <code>string created_at = 5;</code>
      */
     private $created_at = '';
     /**
-     * Generated from protobuf field <code>string update_at = 6;</code>
+     * Generated from protobuf field <code>string updated_at = 6;</code>
      */
-    private $update_at = '';
+    private $updated_at = '';
 
     public function __construct() {
         \GPBMetadata\Esquemas\PersonaMessage::initOnce();
@@ -121,8 +121,8 @@ class PersonaMessage extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>bool sexo = 4;</code>
-     * @return bool
+     * Generated from protobuf field <code>int32 sexo = 4;</code>
+     * @return int
      */
     public function getSexo()
     {
@@ -130,13 +130,13 @@ class PersonaMessage extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>bool sexo = 4;</code>
-     * @param bool $var
+     * Generated from protobuf field <code>int32 sexo = 4;</code>
+     * @param int $var
      * @return $this
      */
     public function setSexo($var)
     {
-        GPBUtil::checkBool($var);
+        GPBUtil::checkInt32($var);
         $this->sexo = $var;
 
         return $this;
@@ -165,23 +165,23 @@ class PersonaMessage extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string update_at = 6;</code>
+     * Generated from protobuf field <code>string updated_at = 6;</code>
      * @return string
      */
-    public function getUpdateAt()
+    public function getUpdatedAt()
     {
-        return $this->update_at;
+        return $this->updated_at;
     }
 
     /**
-     * Generated from protobuf field <code>string update_at = 6;</code>
+     * Generated from protobuf field <code>string updated_at = 6;</code>
      * @param string $var
      * @return $this
      */
-    public function setUpdateAt($var)
+    public function setUpdatedAt($var)
     {
         GPBUtil::checkString($var, True);
-        $this->update_at = $var;
+        $this->updated_at = $var;
 
         return $this;
     }

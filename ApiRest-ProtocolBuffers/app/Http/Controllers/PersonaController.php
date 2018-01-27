@@ -4,20 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
+
 class PersonaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //Obtenemos todas las personas.
+        // Creamos un objeto de la clase PersonasMessage.
+        $personasMessage = new \ProtocolBuffers\PersonasMessage();
+
+        // Obtenemos todas las personas.
         $personas = \App\Persona::all();
+
+        // Creamos un array con la propiedad 'lista' y guardaremos los datos de personas como un 'Array'
+        $personasArray['lista'] = $personas->toArray();
         
-        //Las mostramos como JSON.
-        echo $personas->toJson();
+        // Transformamos el array a JSON.
+        $personasArrayJson = json_encode($personasArray);
+
+        // Cargamos los datos del JSON dentro de PersonasMessage.
+        $personasMessage->mergeFromJsonString($personasArrayJson);
+
+        echo 
+            ($request->header('Content-Type') == 'application/x-protobuf') ?
+                //Serializamos los datos como bytes.
+                $personasMessage->serializeToString() :
+                //Serializamos los datos como json.
+                $personasMessage->serializeToJsonString();
     }
 
     /**
@@ -27,14 +46,26 @@ class PersonaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { 
+    {
+        // Creamos un objeto de la clase PersonaMessage.
+        $personaMessage = new \ProtocolBuffers\PersonaMessage();
+
         //Creamos a una nueva Persona.
         $persona = new \App\Persona();
 
-        //Le asignamos sus propiedades desde un json.
-        $persona->nombre = $request->input('nombre');
-        $persona->edad= $request->input('edad');
-        $persona->sexo = $request->input('sexo');
+        if($request->header('Content-Type') == 'application/x-protobuf')
+        {
+            $personaMessage->mergeFromString($request->getContent());
+        }
+        else
+        {
+            $personaMessage->mergeFromJsonString($request->getContent());
+        }
+
+        //Le asignamos sus propiedades.
+        $persona->nombre = $personaMessage->getNombre();
+        $persona->edad= $personaMessage->getEdad();
+        $persona->sexo = $personaMessage->getSexo();
 
         //Guardamos el registro y mostramos un mensaje de acuerdo a si se guardo o no.
         echo $persona->save() ? 'Persona Guardada': 'Error: No se pudo agregar la persona';
@@ -46,8 +77,11 @@ class PersonaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        // Creamos un objeto de la clase PersonaMessage.
+        $personaMessage = new \ProtocolBuffers\PersonaMessage();
+
         //Buscamos la persona por su Id.
         $persona = \App\Persona::find($id);
         
@@ -58,8 +92,15 @@ class PersonaController extends Controller
             exit;
         }
 
-        //Mostramos la persona en notación JSON
-        echo $persona->toJson();
+        // Cargamos los datos del JSON dentro de PersonaMessage.
+        $personaMessage->mergeFromJsonString($persona->toJson());
+
+        echo 
+            ($request->header('Content-Type') == 'application/x-protobuf') ?
+                //Serializamos los datos como bytes.
+                $personaMessage->serializeToString() :
+                //Serializamos los datos como json.
+                $personaMessage->serializeToJsonString();
     }
 
     /**
@@ -71,6 +112,9 @@ class PersonaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Creamos un objeto de la clase PersonaMessage.
+        $personaMessage = new \ProtocolBuffers\PersonaMessage();
+
         //Buscamos la persona por su Id.
         $persona = \App\Persona::find($id);
                 
@@ -81,10 +125,19 @@ class PersonaController extends Controller
             exit;
         }
 
+        if($request->header('Content-Type') == 'application/x-protobuf')
+        {
+            $personaMessage->mergeFromString($request->getContent());
+        }
+        else
+        {
+            $personaMessage->mergeFromJsonString($request->getContent());
+        }
+        
         //Le asignamos sus nuevos valores.
-        $persona->nombre = $request->input('nombre');
-        $persona->edad= $request->input('edad');
-        $persona->sexo = $request->input('sexo');
+        $persona->nombre = $personaMessage->getNombre();
+        $persona->edad= $personaMessage->getEdad();
+        $persona->sexo = $personaMessage->getSexo();
 
         //Gaurdamos sus cambios y mostramos un mensaje del estado de la actualiación.
         echo $persona->save() ? 'Persona Modificada': 'Error: No se pudo modificar la persona';
