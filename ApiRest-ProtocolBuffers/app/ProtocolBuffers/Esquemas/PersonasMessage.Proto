@@ -1,0 +1,15 @@
+// Declaramos la versión de nuestro proto. 
+syntax = "proto3";
+
+// Le damos el nombre de su package.
+package ProtocolBuffers;
+
+// Importamos el Message de Persona.
+import "Esquemas/PersonaMessage.proto";
+
+// Esquema qyue tendra una lista de personas.
+message PersonasMessage
+{
+    // Declaramos una propiedad repetida de Personas.
+    repeated PersonaMessage lista = 1;
+}

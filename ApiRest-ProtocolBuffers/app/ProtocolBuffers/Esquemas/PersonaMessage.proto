@@ -1,0 +1,18 @@
+// Declaramos la versión de nuestro proto. 
+syntax = "proto3";
+
+// Le damos el nombre de su package.
+package ProtocolBuffers;
+
+// Esquema que servira para generar nuestras clases de Persona.
+message PersonaMessage
+{
+    // Declaramos las propiedades similares a la de nuestra entidad 
+    // de Personas de la base de datos.
+    int32 id = 1;
+    string nombre = 2;
+    int32 edad = 3;
+    bool sexo = 4;
+    string created_at = 5;
+    string update_at = 6;
+}
