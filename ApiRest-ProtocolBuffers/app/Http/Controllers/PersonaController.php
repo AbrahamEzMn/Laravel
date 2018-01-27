@@ -4,15 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-
-
 class PersonaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JSON|Byte[] 
      */
     public function index(Request $request)
     {
@@ -22,7 +20,7 @@ class PersonaController extends Controller
         // Obtenemos todas las personas.
         $personas = \App\Persona::all();
 
-        // Creamos un array con la propiedad 'lista' y guardaremos los datos de personas como un 'Array'
+        // Creamos un array con la propiedad 'lista' para hacerlo compatible con al extructura de PersonasMessage
         $personasArray['lista'] = $personas->toArray();
         
         // Transformamos el array a JSON.
@@ -53,12 +51,15 @@ class PersonaController extends Controller
         //Creamos a una nueva Persona.
         $persona = new \App\Persona();
 
+        // Validamos el tipo de petición.
         if($request->header('Content-Type') == 'application/x-protobuf')
         {
+            // Obtenemos los datos en forma de bytes.
             $personaMessage->mergeFromString($request->getContent());
         }
         else
         {
+            // Obtenemos los datos como un json.
             $personaMessage->mergeFromJsonString($request->getContent());
         }
 
@@ -74,8 +75,9 @@ class PersonaController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JSON|Byte[] 
      */
     public function show(Request $request, $id)
     {
@@ -125,21 +127,24 @@ class PersonaController extends Controller
             exit;
         }
 
-        if($request->header('Content-Type') == 'application/x-protobuf')
-        {
-            $personaMessage->mergeFromString($request->getContent());
-        }
-        else
-        {
-            $personaMessage->mergeFromJsonString($request->getContent());
-        }
+         // Validamos el tipo de petición.
+         if($request->header('Content-Type') == 'application/x-protobuf')
+         {
+             // Obtenemos los datos en forma de bytes.
+             $personaMessage->mergeFromString($request->getContent());
+         }
+         else
+         {
+             // Obtenemos los datos como un json.
+             $personaMessage->mergeFromJsonString($request->getContent());
+         }
         
         //Le asignamos sus nuevos valores.
         $persona->nombre = $personaMessage->getNombre();
         $persona->edad= $personaMessage->getEdad();
         $persona->sexo = $personaMessage->getSexo();
 
-        //Gaurdamos sus cambios y mostramos un mensaje del estado de la actualiación.
+        //Guardamos sus cambios y mostramos un mensaje del estado de la actualiación.
         echo $persona->save() ? 'Persona Modificada': 'Error: No se pudo modificar la persona';
     }
 

@@ -7,8 +7,7 @@ package ProtocolBuffers;
 // Esquema que servira para generar nuestras clases de Persona.
 message PersonaMessage
 {
-    // Declaramos las propiedades similares a la de nuestra entidad 
-    // de Personas de la base de datos.
+    // Declaramos las propiedades similares a la de nuestra entidad de Personas de la base de datos.
     int32 id = 1;
     string nombre = 2;
     int32 edad = 3;
